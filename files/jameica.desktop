@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Jameica (Hibiscus)
+Exec=/opt/jameica/jameica.sh
+Icon=/opt/jameica/jameica-icon.png
+Comment=Online Banking
+Terminal=false
+Type=Application

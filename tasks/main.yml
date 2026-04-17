@@ -1,0 +1,42 @@
+---
+- name: jameica role
+  tags:
+  - jameica
+  block:
+
+  # install java
+  - name: Install Java with apt
+    become: true
+    ansible.builtin.apt:
+      state: present
+      name: default-jre
+
+  # install from archive
+  - when: jameica_install_from == "archive"
+    name: Install from archive to /opt/jameica
+    become: true
+    ansible.builtin.unarchive:
+      src: "{{ jameica_install_archive }}"
+      dest: /opt/jameica
+      owner: root
+      group: root
+      mode: o=rw,g=rx,o=rx
+
+  # install from url
+  - when: jameica_install_from == "url"
+    name: Install from url to /opt/jameica
+    ansible.builtin.get_url:
+      url: "{{ jameica_install_url }}"
+      dest: /opt/jameica
+      owner: root
+      group: root
+
+  # desktop integration
+  - name: Copy .desktop-file to /usr/share/applications/jameica.desktop
+    become: true
+    ansible.builtin.copy:
+      src: "{{ jameica_desktop_src }}"
+      dest: /usr/share/applications/jameica.desktop
+      owner: root
+      group: root
+      mode: o=rw,g=r,o=r
