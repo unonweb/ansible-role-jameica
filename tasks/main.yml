@@ -11,6 +11,14 @@
       state: present
       name: default-jre
 
+  # mkdir
+  - name: Mkdir /opt/jameica
+    become: true
+    ansible.builtin.file:
+      path: /opt/jameica
+      state: directory
+      mode: o=rwx,g=,o=rx
+
   # install from archive
   - when: jameica_install_from == "archive"
     name: Install from archive to /opt/jameica
@@ -26,6 +34,18 @@
   - when: jameica_install_from == "url"
     name: Install from url to /opt/jameica
     become: true
+    ansible.builtin.unarchive:
+      src: "{{ jameica_install_url }}"
+      dest: /opt
+      remote_src: true
+      owner: root
+      group: root
+      mode: o=rw,g=rx,o=rx
+
+  # install from url
+  - when: false # jameica_install_from == "url"
+    name: Install from url to /opt/jameica
+    become: true
     ansible.builtin.get_url:
       url: "{{ jameica_install_url }}"
       dest: /opt/jameica
@@ -35,6 +55,7 @@
   # desktop integration
   - name: Copy .desktop-file to /usr/share/applications/jameica.desktop
     become: true
+    notify: update-desktop-database
     ansible.builtin.copy:
       src: "{{ jameica_desktop_src }}"
       dest: /usr/share/applications/jameica.desktop
