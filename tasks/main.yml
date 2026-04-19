@@ -25,6 +25,7 @@
   # install from url
   - when: jameica_install_from == "url"
     name: Install from url to /opt/jameica
+    become: true
     ansible.builtin.get_url:
       url: "{{ jameica_install_url }}"
       dest: /opt/jameica
