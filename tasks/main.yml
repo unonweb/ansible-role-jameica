@@ -17,7 +17,7 @@
     ansible.builtin.file:
       path: /opt/jameica
       state: directory
-      mode: o=rwx,g=,o=rx
+      mode: u=rwx,g=,o=rx
 
   # install from archive
   - when: jameica_install_from == "archive"
@@ -40,7 +40,7 @@
       remote_src: true
       owner: root
       group: root
-      mode: o=rw,g=rx,o=rx
+      mode: u=rwx,g=rx,o=rx
 
   # install from url
   - when: false # jameica_install_from == "url"
@@ -61,4 +61,4 @@
       dest: /usr/share/applications/jameica.desktop
       owner: root
       group: root
-      mode: o=rw,g=r,o=r
+      mode: u=rw,g=r,o=r
