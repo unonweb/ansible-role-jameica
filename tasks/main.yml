@@ -28,7 +28,7 @@
       dest: /opt/jameica
       owner: root
       group: root
-      mode: o=rw,g=rx,o=rx
+      mode: u=rwx,g=rx,o=rx
 
   # install from url
   - when: jameica_install_from == "url"
