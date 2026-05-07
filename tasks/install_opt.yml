@@ -1,0 +1,52 @@
+# remove
+- when: jameica_install_opt_state == "absent" or jameica_install_opt_state == "reinstall"
+  name: Remove /opt/jameica
+  become: true
+  ansible.builtin.file:
+    path: /opt/jameica
+    state: absent
+
+# install
+- when: jameica_install_opt_state == "present" or jameica_install_opt_state == "reinstall"
+  block:
+
+  # check dir
+  - name: Check if /opt/jameica already exists
+    ansible.builtin.stat:
+      path: "/opt/jameica"
+    register: __jameica_dst
+
+  # install
+  - when: not __jameica_dst.stat.exists
+    block:
+
+    # mkdir
+    - name: Mkdir /opt/jameica
+      become: true
+      ansible.builtin.file:
+        path: /opt/jameica
+        state: directory
+        mode: u=rwx,g=,o=rx
+
+    # install from archive
+    - when: jameica_install_opt_from == "archive"
+      name: Install from archive to /opt/jameica
+      become: true
+      ansible.builtin.unarchive:
+        src: "{{ jameica_install_opt_archive }}"
+        dest: /opt/jameica
+        owner: root
+        group: root
+        mode: u=rwx,g=rx,o=rx
+
+    # install from url
+    - when: jameica_install_opt_from == "url"
+      name: Install from url to /opt/jameica
+      become: true
+      ansible.builtin.unarchive:
+        src: "{{ jameica_install_opt_url }}"
+        dest: /opt
+        remote_src: true
+        owner: root
+        group: root
+        mode: u=rwx,g=rx,o=rx
