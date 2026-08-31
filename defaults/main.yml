@@ -1,5 +1,6 @@
 ---
-jameica_install_from: url # archive
-jameica_install_archive: jameica.tar.xz
-jameica_install_url: https://www.willuhn.de/products/jameica/releases/current/jameica/jameica-linux64.zip
+jameica_install_opt_state: present
+jameica_install_opt_from: url # archive
+jameica_install_opt_archive: jameica.tar.xz
+jameica_install_opt_url: https://www.willuhn.de/products/jameica/releases/current/jameica/jameica-linux64.zip
 jameica_desktop_src: jameica.desktop
